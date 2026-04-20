@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="mb-4">{{ region.name }}</h4>
+        {% if region.text %}
+            {{ region.text | safe }}
+        {% endif %}
+    </div>
+    <hr class="mt-4">
+    <div class="container-sm">
+        <div class="row">
+            <div class="col-4">
+                <div class="my-3">
+                    <a href="{{ url_for('update', region_id=region.id) }}" class="btn btn-primary">Обновить расписания</a>
+                </div>
+                <form method="POST" action="{{ url_for('compare', region_id=region.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="my-3">
+                    {{ form.compare_button(class="btn btn-secondary") }}
+                </div>
+                <div class="row justify-content-md-center">
+                        <div class="col">
+                            {{ form.date1.label(class="text-success form-label") }}
+                            {{ form.date1(class="form-select") }}
+                        </div>
+                        <div class="col">
+                            {{ form.date2.label(class="text-secondary form-label") }}
+                            {{ form.date2(class="form-select") }}
+                        </div>
+                </div>
+                </form>
+            </div>
+            <div class="col-8">
+                {% if differences == [] %}
+                    <h5>Отличий не найдено</h5>
+                {% elif differences %}
+                    <h5>Найдены отличия:</h5>
+                    {% for difference in differences %}
+                    <div class="btn-group my-3" role="group">
+                        <a class="btn btn-outline-success" href="{{ difference[1] }}">{{ difference[0] }}</a>
+                        <a class="btn btn-outline-secondary" href="{{ difference[2] }}">{{ difference[0] }}</a>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% if new == [] %}
+                    <h5>Новых файлов не найдено</h5>
+                {% elif new %}
+                    <h5>Найдены новые файлы:</h5>
+                    {% for new_file in new %}
+                    <div class="btn-group my-3" role="group">
+                        <a class="btn btn-outline-warning" href="{{ new_file[1] }}">{{ new_file[0] }}</a>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

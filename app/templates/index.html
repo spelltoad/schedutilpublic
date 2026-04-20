@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="list-group">
+        {% for region in regions %}
+            <a href="{{ region.id }}" class="list-group-item list-group-item-action"><h5>{{ region.code }}</h4>{{ region.name }}</a></p>
+        {% endfor %}
+    </div>
+{% endblock %}
